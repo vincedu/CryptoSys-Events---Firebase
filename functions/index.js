@@ -73,4 +73,26 @@ app.get('/user/data', async (req, res) => {
     }
 });
 
+app.post('/user/like', async (req, res) => {
+    try {
+        const result = await admin.firestore().collection('users').doc(req.user.uid).update({
+            liked: admin.firestore.FieldValue.arrayUnion(req.body.id)
+        });
+        res.status(201).json({result});
+    } catch(error) {
+        res.sendStatus(500);
+    }
+});
+
+app.post('/user/unlike', async (req, res) => {
+    try {
+        const result = await admin.firestore().collection('users').doc(req.user.uid).update({
+            liked: admin.firestore.FieldValue.arrayRemove(req.body.id)
+        });
+        res.status(201).json({result});
+    } catch(error) {
+        res.sendStatus(500);
+    }
+});
+
 exports.api = functions.https.onRequest(app);
