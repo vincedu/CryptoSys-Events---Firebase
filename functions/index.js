@@ -63,9 +63,28 @@ app.get('/user/data', async (req, res) => {
         } else {
             const userData = userDoc.data();
             if (!userData.walletAccountName) {
-                res.status(404).json({errorCode: 404, errorMessage: 'WAX Wallet token not found'});
+                res.status(404).json({errorCode: 404, errorMessage: 'Wallet account name not found'});
             } else {
                 res.status(200).json(userData);
+            }
+        }
+    } catch(error) {
+        res.sendStatus(500);
+    }
+});
+
+app.get('/user/:id', async (req, res) => {
+    try {
+        const usersRef = admin.firestore().collection('users').doc(req.params.id);
+        const userDoc = await usersRef.get();
+        if (!userDoc.exists) {
+            res.status(404).json({errorCode: 404, errorMessage: 'User not found'});
+        } else {
+            const userData = userDoc.data();
+            if (!userData.displayName) {
+                res.status(404).json({errorCode: 404, errorMessage: 'User display name not found'});
+            } else {
+                res.status(200).json({ displayName: userData.displayName });
             }
         }
     } catch(error) {
