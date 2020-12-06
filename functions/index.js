@@ -35,9 +35,9 @@ const authenticate = async (req, res, next) => {
     }
 };
 
-app.use(authenticate);
+// app.use(authenticate);
 
-app.post('/user/data', async (req, res) => {
+app.post('/user/data', authenticate, async (req, res) => {
     try {
         const displayName = req.body.displayName;
         const walletAccountName = req.body.walletAccountName;
@@ -54,7 +54,7 @@ app.post('/user/data', async (req, res) => {
     }
 });
 
-app.get('/user/data', async (req, res) => {
+app.get('/user/data', authenticate, async (req, res) => {
     try {
         const usersRef = admin.firestore().collection('users').doc(req.user.uid);
         const userDoc = await usersRef.get();
@@ -92,7 +92,7 @@ app.get('/user/:id', async (req, res) => {
     }
 });
 
-app.post('/user/like', async (req, res) => {
+app.post('/user/like', authenticate, async (req, res) => {
     try {
         const result = await admin.firestore().collection('users').doc(req.user.uid).update({
             liked: admin.firestore.FieldValue.arrayUnion(req.body.id)
@@ -103,7 +103,7 @@ app.post('/user/like', async (req, res) => {
     }
 });
 
-app.post('/user/unlike', async (req, res) => {
+app.post('/user/unlike', authenticate, async (req, res) => {
     try {
         const result = await admin.firestore().collection('users').doc(req.user.uid).update({
             liked: admin.firestore.FieldValue.arrayRemove(req.body.id)
