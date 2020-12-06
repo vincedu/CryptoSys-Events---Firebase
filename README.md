@@ -4,7 +4,7 @@ This git repository contains the project for the firebase portion of the Spectac
 
 ## User data API (`/functions`)
 
-The user data API allows us to fetch and store user data in the a Firestore database within the same Firebase project. Currently, we store information such as user display names, links to cryptowallets and user liked events. <br \>
+The user data API allows us to fetch and store user data in the a Firestore database within the same Firebase project. Currently, we store information such as user display names, links to cryptowallets and user liked events.
 
 The API is implemented using Express.js and leverages the firebase admin sdk to handle authentication.
 
